@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from datetime import date
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -323,3 +324,12 @@ def edit_grievance(request, id):
         return redirect('admin_grievances')
 
     return render(request, 'edit_grievance.html', {'grievance': grievance})
+=======
+from django.shortcuts import render
+from django.http import HttpResponse
+
+
+def viewdata(request):
+    # students = students.objects.all() 
+    return render(request,"home.html")                   
+>>>>>>> ecb0124e2d38fa3ec5cd755c5d66af86ad4264bf

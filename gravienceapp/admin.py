@@ -1,4 +1,5 @@
 from django.contrib import admin
+<<<<<<< HEAD
 from .models import Grievance
 
 @admin.register(Grievance)
@@ -39,3 +40,7 @@ class GrievanceAdmin(admin.ModelAdmin):
 admin.site.site_header = "Student Grievance Admin Panel"
 admin.site.site_title = "Student Grievance Portal"
 admin.site.index_title = "Manage Student Grievances"
+=======
+
+# Register your models here.
+>>>>>>> ecb0124e2d38fa3ec5cd755c5d66af86ad4264bf

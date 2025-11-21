@@ -1,4 +1,5 @@
 from django.db import models
+<<<<<<< HEAD
 from django.contrib.auth.models import User  
 
 class Grievance(models.Model):
@@ -13,3 +14,7 @@ class Grievance(models.Model):
 
     def __str__(self):
         return f"{self.student_name} - {self.subject}"
+=======
+
+# Create your models here.
+>>>>>>> ecb0124e2d38fa3ec5cd755c5d66af86ad4264bf
