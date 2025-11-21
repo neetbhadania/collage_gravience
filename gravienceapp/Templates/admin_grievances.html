@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% block title %}Manage Grievances{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Student Grievance Dashboard</h2>
+
+    <style>
+        .analytics-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .analytics-item {
+            flex: 1 1 220px;
+            text-align: center;
+        }
+        .progress-circle {
+            --value: 0%;
+            --progress-color: #0d6efd;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 0.75rem;
+            border-radius: 50%;
+            background: conic-gradient(var(--progress-color) var(--value), #e9ecef 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .progress-circle-inner {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.3rem;
+        }
+        .circle-label {
+            margin: 0;
+            font-weight: 600;
+        }
+        .circle-subtext {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+    </style>
+
+    <div class="analytics-wrapper">
+
+        <div class="analytics-item">
+            <div class="progress-circle" style="--value: 100%; --progress-color: #0d6efd;">
+                <div class="progress-circle-inner">
+                    {{ total_grievances }}
+                </div>
+            </div>
+            <p class="circle-label">Total Grievances</p>
+            
+        </div>
+
+        <div class="analytics-item">
+            <div class="progress-circle"
+                 style="--value: {{ today_percentage|default:'0' }}%; --progress-color: #198754;">
+                <div class="progress-circle-inner">
+                    {{ today_grievances }}
+                </div>
+            </div>
+            <p class="circle-label">Today's Grievances</p>
+            <p class="circle-subtext">
+                {{ today_percentage|default:"0" }}% of total
+            </p>
+        </div>
+
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Student Name</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for g in grievances %}
+                <tr>
+                    <td>{{ g.id }}</td>
+                    <td>{{ g.student_name }}</td>
+                    <td>{{ g.description|truncatewords:10 }}</td>
+                    <td>{{ g.created_at|date:"d M Y, H:i" }}</td>
+                    <td>
+                        <a href="{% url 'edit_grievance' g.id %}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{% url 'delete_grievance' g.id %}" class="btn btn-sm btn-danger"
+                           onclick="return confirm('Delete this grievance?')">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7" class="text-center">No grievances submitted yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{% url 'admin_logout' %}" class="btn btn-secondary mt-3">Logout</a>
+
+</div>
+
+{% endblock %}
