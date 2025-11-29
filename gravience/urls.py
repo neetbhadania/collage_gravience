@@ -18,9 +18,7 @@ from django.contrib import admin
 from django.urls import path,include
 
 urlpatterns = [
-<<<<<<< HEAD
+
     path('admin/', admin.site.urls),
-=======
->>>>>>> ecb0124e2d38fa3ec5cd755c5d66af86ad4264bf
     path('', include('gravienceapp.urls')),
 ]

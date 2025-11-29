@@ -9,17 +9,14 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+
 import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-TEMPLATES_DIR = os.path.join(BASE_DIR,'Templates')
-<<<<<<< HEAD
+TEMPLATES_DIR = BASE_DIR / 'templates'   # Make sure this folder exists
 ADMIN_REG_CODE = "letmein123"
-=======
-
->>>>>>> ecb0124e2d38fa3ec5cd755c5d66af86ad4264bf
 
 
 # Quick-start development settings - unsuitable for production
@@ -43,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'gravienceapp'
+
+    'gravienceapp',   # your app
 ]
 
 MIDDLEWARE = [
@@ -54,10 +52,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-<<<<<<< HEAD
-    'django.middleware.csrf.CsrfViewMiddleware',
-=======
->>>>>>> ecb0124e2d38fa3ec5cd755c5d66af86ad4264bf
 ]
 
 ROOT_URLCONF = 'gravience.urls'
@@ -65,18 +59,12 @@ ROOT_URLCONF = 'gravience.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-<<<<<<< HEAD
-        'DIRS': [BASE_DIR / 'templates'],  # optional if you have a global templates folder
-        'APP_DIRS': True,                  # must be True to find app templates
+        # Use the global templates directory
+        'DIRS': [TEMPLATES_DIR],
+        'APP_DIRS': True,   # enables templates inside app/templates/
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-=======
-        'DIRS': [TEMPLATES_DIR],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
->>>>>>> ecb0124e2d38fa3ec5cd755c5d66af86ad4264bf
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -85,10 +73,6 @@ TEMPLATES = [
     },
 ]
 
-<<<<<<< HEAD
-
-=======
->>>>>>> ecb0124e2d38fa3ec5cd755c5d66af86ad4264bf
 WSGI_APPLICATION = 'gravience.wsgi.application'
 
 
@@ -127,11 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-<<<<<<< HEAD
-TIME_ZONE = 'Asia/Kolkata'
-=======
-TIME_ZONE = 'UTC'
->>>>>>> ecb0124e2d38fa3ec5cd755c5d66af86ad4264bf
+TIME_ZONE = 'Asia/Kolkata'   # keep only one time zone
 
 USE_I18N = True
 
@@ -140,32 +120,32 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-<<<<<<< HEAD
+
 STATIC_URL = '/static/'
-import os
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-=======
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',    # make sure this folder exists
+]
 
-STATIC_URL = 'static/'
-
->>>>>>> ecb0124e2d38fa3ec5cd755c5d66af86ad4264bf
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-<<<<<<< HEAD
 
-LOGIN_URL = '/login/'  
-LOGIN_REDIRECT_URL = '/viewdata/'  
-LOGOUT_REDIRECT_URL = '/login/'  
+
+# Authentication redirects
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/viewdata/'
+LOGOUT_REDIRECT_URL = '/login/'
+
 
 # Email Configuration (for Gmail)
+# https://docs.djangoproject.com/en/5.2/topics/email/
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'abaththa@gmail.com'        
-EMAIL_HOST_PASSWORD = 'Group@01'      
-=======
->>>>>>> ecb0124e2d38fa3ec5cd755c5d66af86ad4264bf
+EMAIL_HOST_USER = 'abaththa@gmail.com'
+EMAIL_HOST_PASSWORD = 'Group@01'  # Better to load this from environment in real projects

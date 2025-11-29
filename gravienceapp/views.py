@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from datetime import date
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -68,7 +67,7 @@ def register(request):
 
     return render(request, 'register.html', {'form': form})
 
-# Login
+
 def user_login(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -79,38 +78,30 @@ def user_login(request):
         if user is not None:
             login(request, user)
 
-            next_url = request.POST.get("next") or request.GET.get("next")
+            next_url = request.GET.get("next") or request.POST.get("next")
             if next_url:
                 return redirect(next_url)
 
-            
-            if user.is_staff or user.is_superuser:
-                return redirect("admin_grievances")
-            else:
+            if user.is_staff:
                 return redirect("student_grievance")
 
-        else:
-            messages.error(request, "Invalid username or password")
+            return redirect("student_grievance")
+
+        messages.error(request, "Invalid username or password")
 
     return render(request, "login.html")
-
 
 
 def user_logout(request):
     logout(request)
     messages.success(request, "You have been logged out.")
-    form = AuthenticationForm()
-    next_url = ''   
-    return render(request, 'login.html', {'form': form, 'next': next_url})
+    return redirect('viewdata')   # this should be the name of your user_login URL'
 
 @login_required
 def admin_logout(request):
     logout(request)
     messages.success(request, "Admin logged out.")
-    form = AuthenticationForm()
-    next_url = ''
-    return render(request, 'admin_login.html', {'form': form, 'next': next_url})
-
+    return redirect('admin_login')   # URL name of admin login page'
 # About Page
 def about(request):
     return render(request, "about.html")
@@ -180,9 +171,18 @@ def edit_grievance(request, id):
 def is_admin(user):
     return user.is_authenticated and user.is_staff
 
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
 
 def admin_login(request):
+    # If already logged in as staff, send to admin page (or ?next= URL)
     if request.user.is_authenticated and request.user.is_staff:
+        next_url = request.GET.get("next") or request.POST.get("next")
+        if next_url:
+            return redirect(next_url)
         return redirect('admin_grievances')
 
     if request.method == 'POST':
@@ -191,17 +191,24 @@ def admin_login(request):
         if form.is_valid():
             user = form.get_user()
 
-            if user.is_staff:
+            if user.is_staff:  # only staff/admin allowed here
                 login(request, user)
+
+                # Respect ?next= if present
+                next_url = request.GET.get("next") or request.POST.get("next")
+                if next_url:
+                    return redirect(next_url)
+
                 return redirect('admin_grievances')
             else:
-                messages.error(request, "You are not allowed to access admin panel.")
+                messages.error(request, "You are not allowed to access the admin panel.")
         else:
             messages.error(request, "Invalid credentials.")
     else:
         form = AuthenticationForm()
 
     return render(request, 'admin_login.html', {'form': form})
+
 
 @login_required
 @user_passes_test(is_admin)
@@ -218,66 +225,6 @@ def admin_grievances(request):
     }
 
     return render(request, 'admin_grievances.html', context)
-
-@login_required
-def admin_logout(request):
-    logout(request)
-    messages.success(request, "You have been logged out.")
-    return redirect("admin_login")
-
-def user_login(request):
-   
-    if request.user.is_authenticated:
-        return redirect('viewdata')
-
-    next_url = request.GET.get('next') or request.POST.get('next') or ''
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            if user.is_staff:
-                messages.error(request, "Please use the Admin Login page.")
-                return redirect('admin_login')
-            login(request, user)
-            messages.success(request, "Logged in successfully.")
-            return redirect(next_url or 'viewdata')
-        else:
-            messages.error(request, "Invalid username or password.")
-    else:
-        form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form, 'next': next_url})
-
-
-def admin_login(request):
-    if request.user.is_authenticated and request.user.is_staff:
-      
-        return redirect("admin_grievances")
-
-    if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        user = authenticate(request, username=username, password=password)
-        if user is not None and user.is_staff:
-            login(request, user)
-            messages.success(request, "Welcome Admin!")
-            return redirect("admin_grievances")   
-        else:
-            messages.error(request, "Invalid credentials or not an admin user.")
-    return render(request, "admin_login.html")
-
-# Normal logout for site users
-def user_logout(request):
-    logout(request)
-    messages.success(request, "You have been logged out.")
-    return render(request, 'login.html', {'form': form, 'next': next_url}) 
-
-
-# Admin logout 
-@login_required
-def admin_logout(request):
-    logout(request)
-    messages.success(request, "Admin logged out.")
-    return redirect('admin_login')
 
 
 # Admin-only check
@@ -324,7 +271,7 @@ def edit_grievance(request, id):
         return redirect('admin_grievances')
 
     return render(request, 'edit_grievance.html', {'grievance': grievance})
-=======
+
 from django.shortcuts import render
 from django.http import HttpResponse
 
@@ -332,4 +279,4 @@ from django.http import HttpResponse
 def viewdata(request):
     # students = students.objects.all() 
     return render(request,"home.html")                   
->>>>>>> ecb0124e2d38fa3ec5cd755c5d66af86ad4264bf
+

@@ -1,7 +1,5 @@
-<<<<<<< HEAD
 from django.urls import path
 from . import views
-from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('viewdata/', views.viewdata, name='viewdata'),
@@ -12,17 +10,11 @@ urlpatterns = [
     path('admin-login/', views.admin_login, name='admin_login'),
     path('admin-logout/', views.admin_logout, name='admin_logout'),
     path('register/', views.register, name='register'),
-    
+
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
+
     path('admin-grievances/', views.admin_grievances, name='admin_grievances'),
     path('admin-grievances/delete/<int:id>/', views.delete_grievance, name='delete_grievance'),
     path('admin-grievances/edit/<int:id>/', views.edit_grievance, name='edit_grievance'),
-=======
-from django.urls import path # type: ignore
-from . import views
-
-urlpatterns = [
-    path('viewdata/', views.viewdata),
->>>>>>> ecb0124e2d38fa3ec5cd755c5d66af86ad4264bf
 ]
